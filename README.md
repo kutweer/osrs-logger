@@ -100,21 +100,21 @@ In your Proxmox web UI (`https://10.2.20.170:8006`):
 2. Set the network interface to **VLAN 25** (`10.2.25.0/24`) — the LXC will get an IP via DHCP in the range `10.2.25.100–10.2.25.250`
 3. Recommended specs: **2 vCPU · 1 GB RAM · 8 GB disk** (increase if traffic grows)
 4. Enable **Start at boot**
-5. Note the LXC's assigned IP address (e.g. `10.2.25.X`)
+5. Note the LXC's assigned IP address (e.g. `10.2.25.10`)
 
 ### 2. Run the setup script
 
 SSH into the LXC as root and run:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/kutweer/osrs-logger/main/scripts/setup-lxc.sh | bash -s -- http://10.2.25.X
+curl -fsSL https://raw.githubusercontent.com/kutweer/osrs-logger/main/scripts/setup-lxc.sh | bash -s -- http://10.2.25.10
 ```
 
 Or clone and run locally inside the LXC:
 
 ```bash
 git clone https://github.com/kutweer/osrs-logger.git /opt/cloglog
-bash /opt/cloglog/scripts/setup-lxc.sh http://10.2.25.X
+bash /opt/cloglog/scripts/setup-lxc.sh http://10.2.25.10
 ```
 
 The script will:
@@ -136,7 +136,7 @@ sudo env PATH=$PATH:/usr/bin /usr/lib/node_modules/pm2/bin/pm2 startup systemd -
 
 ### 4. Access the app
 
-Open `http://10.2.25.X` in your browser.
+Open `http://10.2.25.10` in your browser.
 
 **Demo credentials:** `demo@cloglog.app` / `password123`
 
