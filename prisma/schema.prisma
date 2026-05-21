@@ -1,0 +1,367 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  // Switch to "postgresql" for production (Neon / Supabase / Railway)
+  // Keep "sqlite" for local development — no server needed
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// ─────────────────────────────────────────────
+// Auth models (NextAuth v5 / Auth.js)
+// ─────────────────────────────────────────────
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  emailVerified DateTime?
+  image         String?
+  passwordHash  String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  accounts  Account[]
+  sessions  Session[]
+  players   PlayerClaim[]
+  goals     Goal[]
+
+  @@map("users")
+}
+
+model Account {
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@id([identifier, token])
+  @@map("verification_tokens")
+}
+
+// ─────────────────────────────────────────────
+// Player models
+// ─────────────────────────────────────────────
+
+enum AccountType {
+  NORMAL
+  IRONMAN
+  HARDCORE_IRONMAN
+  ULTIMATE_IRONMAN
+  GROUP_IRONMAN
+  HARDCORE_GROUP_IRONMAN
+}
+
+enum SyncStatus {
+  PENDING
+  RUNNING
+  SUCCESS
+  FAILED
+  RATE_LIMITED
+}
+
+model Player {
+  id          String      @id @default(cuid())
+  username    String      @unique
+  displayName String?
+  accountType AccountType @default(NORMAL)
+  combatLevel Int?
+  totalLevel  Int?
+  totalXp     BigInt?
+
+  // Collection log stats
+  collectionLogTotal     Int @default(0)
+  collectionLogObtained  Int @default(0)
+
+  lastSyncedAt    DateTime?
+  lastSyncStatus  SyncStatus @default(PENDING)
+  syncErrorMessage String?
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+
+  snapshots         PlayerSnapshot[]
+  collectionItems   PlayerCollectionItem[]
+  syncJobs          SyncJob[]
+  claims            PlayerClaim[]
+
+  @@index([username])
+  @@map("players")
+}
+
+model PlayerClaim {
+  id        String   @id @default(cuid())
+  userId    String
+  playerId  String
+  isPrimary Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  player Player @relation(fields: [playerId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, playerId])
+  @@map("player_claims")
+}
+
+model PlayerSnapshot {
+  id          String   @id @default(cuid())
+  playerId    String
+  snapshotAt  DateTime @default(now())
+
+  // Skill XP
+  attackXp    BigInt?
+  defenceXp   BigInt?
+  strengthXp  BigInt?
+  hitpointsXp BigInt?
+  rangedXp    BigInt?
+  prayerXp    BigInt?
+  magicXp     BigInt?
+  cookingXp   BigInt?
+  woodcuttingXp BigInt?
+  fletchingXp BigInt?
+  fishingXp   BigInt?
+  firemakingXp BigInt?
+  craftingXp  BigInt?
+  smithingXp  BigInt?
+  miningXp    BigInt?
+  herbloreXp  BigInt?
+  agilityXp   BigInt?
+  thievingXp  BigInt?
+  slayerXp    BigInt?
+  farmingXp   BigInt?
+  runecraftXp BigInt?
+  hunterXp    BigInt?
+  constructionXp BigInt?
+
+  collectionLogObtained Int @default(0)
+  collectionLogTotal    Int @default(0)
+
+  player Player @relation(fields: [playerId], references: [id], onDelete: Cascade)
+
+  @@index([playerId, snapshotAt])
+  @@map("player_snapshots")
+}
+
+// ─────────────────────────────────────────────
+// Collection Log models
+// ─────────────────────────────────────────────
+
+model CollectionCategory {
+  id          String  @id @default(cuid())
+  slug        String  @unique
+  name        String
+  parentSlug  String?
+  sortOrder   Int     @default(0)
+  iconItemId  Int?
+  description String?
+
+  items           CollectionItem[]
+  playerItems     PlayerCollectionItem[]
+
+  @@index([slug])
+  @@map("collection_categories")
+}
+
+model CollectionItem {
+  id          String  @id @default(cuid())
+  itemId      Int     @unique
+  name        String
+  slug        String  @unique
+  categoryId  String
+  sortOrder   Int     @default(0)
+
+  // Wiki/game data
+  examineText  String?
+  wikiUrl      String?
+  gePrice      BigInt?
+  highAlch     Int?
+  lowAlch      Int?
+  weight       Float?
+  tradeable    Boolean @default(false)
+  members      Boolean @default(true)
+  stackable    Boolean @default(false)
+  noted        Boolean @default(false)
+
+  // Drop/source metadata
+  dropSource   String?
+  dropRarity   String?
+  dropRarityNum Float?
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  category    CollectionCategory     @relation(fields: [categoryId], references: [id])
+  playerItems PlayerCollectionItem[]
+
+  @@index([categoryId])
+  @@index([name])
+  @@map("collection_items")
+}
+
+model PlayerCollectionItem {
+  id         String   @id @default(cuid())
+  playerId   String
+  itemId     String
+  categoryId String
+  obtained   Boolean  @default(false)
+  quantity   Int      @default(0)
+  obtainedAt DateTime?
+  updatedAt  DateTime @updatedAt
+
+  player   Player             @relation(fields: [playerId], references: [id], onDelete: Cascade)
+  item     CollectionItem     @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  category CollectionCategory @relation(fields: [categoryId], references: [id])
+
+  @@unique([playerId, itemId])
+  @@index([playerId, categoryId])
+  @@map("player_collection_items")
+}
+
+// ─────────────────────────────────────────────
+// Goals models
+// ─────────────────────────────────────────────
+
+enum GoalType {
+  OBTAIN_ITEM
+  COMPLETE_CATEGORY
+  COLLECTION_LOG_PERCENT
+  BOSS_KC
+  CLUE_COUNT
+  SKILL_LEVEL
+  SKILL_XP
+  CUSTOM
+}
+
+enum GoalStatus {
+  NOT_STARTED
+  ACTIVE
+  COMPLETED
+  PAUSED
+}
+
+enum GoalPriority {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+model Goal {
+  id          String       @id @default(cuid())
+  userId      String
+  playerId    String?
+  title       String
+  description String?
+  type        GoalType
+  status      GoalStatus   @default(NOT_STARTED)
+  priority    GoalPriority @default(MEDIUM)
+  pinned      Boolean      @default(false)
+
+  // Target references (flexible — one will be set based on type)
+  targetItemId     Int?
+  targetCategoryId String?
+  targetSkill      String?
+  targetBoss       String?
+  customTarget     String?
+
+  // Progress
+  currentProgress Int  @default(0)
+  targetProgress  Int  @default(1)
+
+  notes       String?
+  createdAt   DateTime  @default(now())
+  completedAt DateTime?
+  updatedAt   DateTime  @updatedAt
+
+  user    User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  updates GoalUpdate[]
+
+  @@index([userId])
+  @@index([status])
+  @@map("goals")
+}
+
+model GoalUpdate {
+  id          String   @id @default(cuid())
+  goalId      String
+  note        String?
+  progressAt  Int
+  createdAt   DateTime @default(now())
+
+  goal Goal @relation(fields: [goalId], references: [id], onDelete: Cascade)
+
+  @@index([goalId])
+  @@map("goal_updates")
+}
+
+// ─────────────────────────────────────────────
+// Sync / Jobs
+// ─────────────────────────────────────────────
+
+model SyncJob {
+  id        String     @id @default(cuid())
+  playerId  String
+  status    SyncStatus @default(PENDING)
+  provider  String     @default("hiscore")
+  startedAt DateTime?
+  finishedAt DateTime?
+  errorMessage String?
+  createdAt DateTime   @default(now())
+
+  player Player @relation(fields: [playerId], references: [id], onDelete: Cascade)
+
+  @@index([playerId])
+  @@index([status])
+  @@map("sync_jobs")
+}
+
+// ─────────────────────────────────────────────
+// Audit
+// ─────────────────────────────────────────────
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  action    String
+  entity    String
+  entityId  String?
+  userId    String?
+  metadata  Json?
+  createdAt DateTime @default(now())
+
+  @@index([entity, entityId])
+  @@index([userId])
+  @@map("audit_logs")
+}

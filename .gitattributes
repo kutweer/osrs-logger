@@ -1,0 +1,11 @@
+# Normalize all text files to LF on checkout (important for shell scripts on Linux)
+* text=auto eol=lf
+
+# Force LF for shell scripts so they run correctly on the LXC
+*.sh text eol=lf
+
+# Binary files — no EOL conversion
+*.png binary
+*.jpg binary
+*.ico binary
+*.db binary
