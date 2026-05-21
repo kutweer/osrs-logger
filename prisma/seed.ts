@@ -1,6 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
-import { OSRS_CATEGORIES, DEMO_ITEMS } from "../src/data/osrs-categories";
+import { OSRS_CATEGORIES } from "../src/data/osrs-categories";
+import { ALL_COLLECTION_LOG_ITEMS } from "../src/data/collection-log-items";
 import { DEMO_GOALS } from "../src/data/demo-player";
 
 const db = new PrismaClient();
@@ -33,7 +34,7 @@ async function main() {
   // ─── Items ────────────────────────────────────────────────
   console.log("  Creating items…");
   let itemCount = 0;
-  for (const item of DEMO_ITEMS) {
+  for (const item of ALL_COLLECTION_LOG_ITEMS) {
     const category = await db.collectionCategory.findFirst({
       where: { slug: item.category },
     });

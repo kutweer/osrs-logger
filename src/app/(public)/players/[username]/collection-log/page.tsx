@@ -3,15 +3,19 @@ import type { Metadata } from "next";
 import { AppShell } from "@/components/app-shell";
 import { PlayerHeader } from "@/components/player-header";
 import { CollectionCategoryCard } from "@/components/collection-category-card";
-import { MetricCard } from "@/components/metric-card";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { Progress } from "@/components/ui/progress";
-import { CheckCircle2, BookOpen, Target, Layers } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { BookOpen, Sword, Shield, Scroll, Gamepad2, Layers } from "lucide-react";
 import { formatNumber, calcPercent } from "@/lib/utils";
 import { DEMO_PLAYER, DEMO_CATEGORIES } from "@/data/demo-player";
+import { OSRS_CATEGORIES } from "@/data/osrs-categories";
+import Link from "next/link";
+import { cn } from "@/lib/utils";
 
 interface Props {
   params: Promise<{ username: string }>;
+  searchParams: Promise<{ tab?: string }>;
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -22,24 +26,64 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default async function CollectionLogPage({ params }: Props) {
+const TABS = [
+  { id: "all",       label: "All",       icon: BookOpen  },
+  { id: "bosses",    label: "Bosses",    icon: Sword     },
+  { id: "raids",     label: "Raids",     icon: Shield    },
+  { id: "clues",     label: "Clues",     icon: Scroll    },
+  { id: "minigames", label: "Minigames", icon: Gamepad2  },
+  { id: "other",     label: "Other",     icon: Layers    },
+];
+
+const SECTION_LABELS: Record<string, string> = {
+  bosses:    "Bosses",
+  raids:     "Raids",
+  clues:     "Clue Scrolls",
+  minigames: "Minigames",
+  other:     "Other",
+};
+
+export default async function CollectionLogPage({ params, searchParams }: Props) {
   const { username } = await params;
+  const { tab = "all" } = await searchParams;
+
   const isDemo = username.toLowerCase() === "omhoog" || username.toLowerCase() === "demo";
   if (!isDemo) return notFound();
 
   const player = DEMO_PLAYER;
-  const categories = DEMO_CATEGORIES;
 
-  const totalObtained = categories.reduce((s, c) => s + c.obtainedCount, 0);
-  const totalItems = categories.reduce((s, c) => s + c.totalCount, 0);
-  const completedCats = categories.filter(c => c.obtainedCount === c.totalCount).length;
-  const logPercent = calcPercent(totalObtained, totalItems);
+  // Group categories by parent
+  const grouped = new Map<string, typeof DEMO_CATEGORIES>();
+  for (const cat of DEMO_CATEGORIES) {
+    const osrsCat = OSRS_CATEGORIES.find((c) => c.slug === cat.slug);
+    const parentSlug = osrsCat?.parent ?? "other";
+    if (!grouped.has(parentSlug)) grouped.set(parentSlug, []);
+    grouped.get(parentSlug)!.push(cat);
+  }
 
-  // Group by parent (bosses, raids, etc.) — simplified grouping for demo
-  const grouped = [
-    { label: "Bosses & Raids", cats: categories.slice(0, 4) },
-    { label: "Other", cats: categories.slice(4) },
-  ].filter(g => g.cats.length > 0);
+  // Stat totals per section
+  const sectionStats = Object.fromEntries(
+    [...grouped.entries()].map(([parent, cats]) => [
+      parent,
+      {
+        obtained: cats.reduce((s, c) => s + c.obtainedCount, 0),
+        total: cats.reduce((s, c) => s + c.totalCount, 0),
+        completed: cats.filter((c) => c.obtainedCount === c.totalCount).length,
+        count: cats.length,
+      },
+    ])
+  );
+
+  const totalObtained = DEMO_CATEGORIES.reduce((s, c) => s + c.obtainedCount, 0);
+  const totalItems    = DEMO_CATEGORIES.reduce((s, c) => s + c.totalCount, 0);
+  const completedCats = DEMO_CATEGORIES.filter((c) => c.obtainedCount === c.totalCount).length;
+  const logPercent    = calcPercent(totalObtained, totalItems);
+
+  // Which sections to show based on active tab
+  const sectionsToShow =
+    tab === "all"
+      ? (["bosses", "raids", "clues", "minigames", "other"] as const)
+      : ([tab] as const);
 
   return (
     <AppShell showSearch>
@@ -56,7 +100,7 @@ export default async function CollectionLogPage({ params }: Props) {
         />
 
         {/* Summary banner */}
-        <div className="rounded-lg border border-border bg-card p-5 mb-6">
+        <div className="rounded-lg border border-border bg-card p-5 mb-5">
           <div className="flex flex-col sm:flex-row sm:items-center gap-5">
             <div className="flex-1">
               <div className="flex items-center gap-2 mb-2">
@@ -76,7 +120,6 @@ export default async function CollectionLogPage({ params }: Props) {
                 </p>
               </div>
             </div>
-
             <div className="flex gap-6 sm:border-l sm:border-border sm:pl-6">
               <div className="text-center">
                 <div className="text-2xl font-bold text-foreground tabular-nums">{formatNumber(totalObtained)}</div>
@@ -87,62 +130,95 @@ export default async function CollectionLogPage({ params }: Props) {
                 <div className="text-[10px] text-muted-foreground uppercase tracking-wider">Completed</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold text-foreground tabular-nums">{categories.length}</div>
+                <div className="text-2xl font-bold text-foreground tabular-nums">{DEMO_CATEGORIES.length}</div>
                 <div className="text-[10px] text-muted-foreground uppercase tracking-wider">Categories</div>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Quick stats */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
-          <MetricCard
-            title="Bosses"
-            value="24/32"
-            subtitle="Unique slots"
-            icon={Target}
-            progress={75}
-          />
-          <MetricCard
-            title="Raids"
-            value="9/14"
-            subtitle="Unique slots"
-            icon={Layers}
-            progress={64}
-          />
-          <MetricCard
-            title="Pets"
-            value="3/8"
-            subtitle="Pets obtained"
-            icon={CheckCircle2}
-            progress={37.5}
-          />
-          <MetricCard
-            title="Clues"
-            value="12/20"
-            subtitle="Unique rewards"
-            icon={BookOpen}
-            progress={60}
-          />
+        {/* Section mini-stats */}
+        <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 mb-5">
+          {(["bosses", "raids", "clues", "minigames", "other"] as const).map((s) => {
+            const st = sectionStats[s];
+            if (!st) return null;
+            const pct = st.total > 0 ? Math.round((st.obtained / st.total) * 100) : 0;
+            return (
+              <Link
+                key={s}
+                href={`/players/${player.username}/collection-log?tab=${s}`}
+                className={cn(
+                  "rounded-md border p-2.5 text-center transition-colors hover:border-primary/40 hover:bg-secondary/50",
+                  tab === s ? "border-primary/60 bg-secondary/60" : "border-border/60 bg-card"
+                )}
+              >
+                <div className="text-base font-bold tabular-nums text-foreground">{pct}%</div>
+                <div className="text-[10px] text-muted-foreground capitalize">{SECTION_LABELS[s]}</div>
+                <div className="text-[10px] text-muted-foreground/70">{st.obtained}/{st.total}</div>
+              </Link>
+            );
+          })}
         </div>
 
-        {/* Categories grouped */}
-        {grouped.map((group) => (
-          <div key={group.label} className="mb-8">
-            <h2 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">
-              {group.label}
-            </h2>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
-              {group.cats.map((cat) => (
-                <CollectionCategoryCard
-                  key={cat.id}
-                  category={cat}
-                  href={`/players/${player.username}/collection-log/${cat.slug}`}
-                />
-              ))}
+        {/* Tab bar */}
+        <div className="flex gap-1 mb-5 overflow-x-auto pb-1">
+          {TABS.map(({ id, label, icon: Icon }) => (
+            <Link
+              key={id}
+              href={`/players/${player.username}/collection-log${id === "all" ? "" : `?tab=${id}`}`}
+              className={cn(
+                "flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium whitespace-nowrap transition-colors",
+                tab === id || (id === "all" && tab === "all")
+                  ? "bg-primary text-primary-foreground"
+                  : "text-muted-foreground hover:text-foreground hover:bg-secondary/60"
+              )}
+            >
+              <Icon className="h-3.5 w-3.5" />
+              {label}
+              {id !== "all" && sectionStats[id] && (
+                <Badge
+                  variant={sectionStats[id].completed === sectionStats[id].count ? "success" : "secondary"}
+                  className="text-[10px] py-0 px-1 ml-0.5"
+                >
+                  {sectionStats[id].completed}/{sectionStats[id].count}
+                </Badge>
+              )}
+            </Link>
+          ))}
+        </div>
+
+        {/* Category sections */}
+        {sectionsToShow.map((sectionSlug) => {
+          const cats = grouped.get(sectionSlug);
+          if (!cats || cats.length === 0) return null;
+          const sorted = [...cats].sort((a, b) => a.sortOrder - b.sortOrder);
+          return (
+            <div key={sectionSlug} className="mb-8">
+              {tab === "all" && (
+                <div className="flex items-center justify-between mb-3">
+                  <h2 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                    {SECTION_LABELS[sectionSlug]}
+                  </h2>
+                  <Link
+                    href={`/players/${player.username}/collection-log?tab=${sectionSlug}`}
+                    className="text-[11px] text-muted-foreground hover:text-primary transition-colors"
+                  >
+                    View all →
+                  </Link>
+                </div>
+              )}
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                {sorted.map((cat) => (
+                  <CollectionCategoryCard
+                    key={cat.id}
+                    category={cat}
+                    href={`/players/${player.username}/collection-log/${cat.slug}`}
+                  />
+                ))}
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </AppShell>
   );

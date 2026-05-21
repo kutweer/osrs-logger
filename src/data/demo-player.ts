@@ -4,8 +4,11 @@
 import type {
   Player,
   CollectionCategoryWithProgress,
+  CollectionItemWithStatus,
   Goal,
 } from "@/types";
+import { OSRS_CATEGORIES } from "./osrs-categories";
+import { ALL_COLLECTION_LOG_ITEMS } from "./collection-log-items";
 
 export const DEMO_PLAYER: Player = {
   id: "demo-omhoog",
@@ -23,104 +26,56 @@ export const DEMO_PLAYER: Player = {
   updatedAt: new Date(),
 };
 
-export const DEMO_CATEGORIES: CollectionCategoryWithProgress[] = [
-  {
-    id: "cat-cox",
-    slug: "chambers-of-xeric",
-    name: "Chambers of Xeric",
-    sortOrder: 0,
-    iconItemId: 21043,
-    obtainedCount: 6,
-    totalCount: 8,
-    itemCount: 8,
-    completionPercent: 75,
-    items: [
-      { id: "i1", itemId: 21043, name: "Twisted bow", slug: "twisted-bow", categoryId: "cat-cox", sortOrder: 0, tradeable: true, members: true, stackable: false, noted: false, obtained: true, quantity: 1, obtainedAt: new Date("2024-03-12") },
-      { id: "i2", itemId: 21003, name: "Elder maul", slug: "elder-maul", categoryId: "cat-cox", sortOrder: 1, tradeable: true, members: true, stackable: false, noted: false, obtained: true, quantity: 1, obtainedAt: new Date("2024-06-01") },
-      { id: "i3", itemId: 21034, name: "Kodai insignia", slug: "kodai-insignia", categoryId: "cat-cox", sortOrder: 2, tradeable: true, members: true, stackable: false, noted: false, obtained: false, quantity: 0 },
-      { id: "i4", itemId: 21028, name: "Dragon claws", slug: "dragon-claws", categoryId: "cat-cox", sortOrder: 3, tradeable: true, members: true, stackable: false, noted: false, obtained: true, quantity: 1, obtainedAt: new Date("2024-04-20") },
-      { id: "i5", itemId: 21012, name: "Ancestral hat", slug: "ancestral-hat", categoryId: "cat-cox", sortOrder: 4, tradeable: true, members: true, stackable: false, noted: false, obtained: true, quantity: 1, obtainedAt: new Date("2024-05-15") },
-      { id: "i6", itemId: 21015, name: "Ancestral robe top", slug: "ancestral-robe-top", categoryId: "cat-cox", sortOrder: 5, tradeable: true, members: true, stackable: false, noted: false, obtained: false, quantity: 0 },
-      { id: "i7", itemId: 21018, name: "Ancestral robe bottom", slug: "ancestral-robe-bottom", categoryId: "cat-cox", sortOrder: 6, tradeable: true, members: true, stackable: false, noted: false, obtained: true, quantity: 1, obtainedAt: new Date("2024-07-03") },
-      { id: "i8", itemId: 21021, name: "Dinh's bulwark", slug: "dinhs-bulwark", categoryId: "cat-cox", sortOrder: 7, tradeable: true, members: true, stackable: false, noted: false, obtained: true, quantity: 1, obtainedAt: new Date("2024-02-28") },
-    ],
-  },
-  {
-    id: "cat-tob",
-    slug: "theatre-of-blood",
-    name: "Theatre of Blood",
-    sortOrder: 1,
-    iconItemId: 22486,
-    obtainedCount: 3,
-    totalCount: 6,
-    itemCount: 6,
-    completionPercent: 50,
-    items: [
-      { id: "i9", itemId: 22486, name: "Scythe of vitur", slug: "scythe-of-vitur", categoryId: "cat-tob", sortOrder: 0, tradeable: true, members: true, stackable: false, noted: false, obtained: true, quantity: 1, obtainedAt: new Date("2024-08-11") },
-      { id: "i10", itemId: 22324, name: "Ghrazi rapier", slug: "ghrazi-rapier", categoryId: "cat-tob", sortOrder: 1, tradeable: true, members: true, stackable: false, noted: false, obtained: false, quantity: 0 },
-      { id: "i11", itemId: 22481, name: "Justiciar faceguard", slug: "justiciar-faceguard", categoryId: "cat-tob", sortOrder: 2, tradeable: true, members: true, stackable: false, noted: false, obtained: false, quantity: 0 },
-      { id: "i12", itemId: 22482, name: "Justiciar chestguard", slug: "justiciar-chestguard", categoryId: "cat-tob", sortOrder: 3, tradeable: true, members: true, stackable: false, noted: false, obtained: true, quantity: 1, obtainedAt: new Date("2024-09-01") },
-      { id: "i13", itemId: 22483, name: "Justiciar legguards", slug: "justiciar-legguards", categoryId: "cat-tob", sortOrder: 4, tradeable: true, members: true, stackable: false, noted: false, obtained: false, quantity: 0 },
-      { id: "i14", itemId: 22002, name: "Avernic defender hilt", slug: "avernic-defender-hilt", categoryId: "cat-tob", sortOrder: 5, tradeable: true, members: true, stackable: false, noted: false, obtained: true, quantity: 1, obtainedAt: new Date("2024-10-15") },
-    ],
-  },
-  {
-    id: "cat-zulrah",
-    slug: "zulrah",
-    name: "Zulrah",
-    sortOrder: 2,
-    iconItemId: 12921,
-    obtainedCount: 5,
-    totalCount: 8,
-    itemCount: 8,
-    completionPercent: 62.5,
-    items: [
-      { id: "i15", itemId: 12921, name: "Tanzanite fang", slug: "tanzanite-fang", categoryId: "cat-zulrah", sortOrder: 0, tradeable: true, members: true, stackable: false, noted: false, obtained: true, quantity: 1, obtainedAt: new Date("2024-01-20") },
-      { id: "i16", itemId: 12922, name: "Magic fang", slug: "magic-fang", categoryId: "cat-zulrah", sortOrder: 1, tradeable: true, members: true, stackable: false, noted: false, obtained: true, quantity: 1, obtainedAt: new Date("2024-02-03") },
-      { id: "i17", itemId: 12923, name: "Serpentine visage", slug: "serpentine-visage", categoryId: "cat-zulrah", sortOrder: 2, tradeable: true, members: true, stackable: false, noted: false, obtained: true, quantity: 1, obtainedAt: new Date("2024-01-30") },
-      { id: "i18", itemId: 12924, name: "Tanzanite mutagen", slug: "tanzanite-mutagen", categoryId: "cat-zulrah", sortOrder: 3, tradeable: true, members: true, stackable: false, noted: false, obtained: false, quantity: 0 },
-      { id: "i19", itemId: 12925, name: "Magma mutagen", slug: "magma-mutagen", categoryId: "cat-zulrah", sortOrder: 4, tradeable: true, members: true, stackable: false, noted: false, obtained: false, quantity: 0 },
-      { id: "i20", itemId: 12927, name: "Zul-andra teleport", slug: "zul-andra-teleport", categoryId: "cat-zulrah", sortOrder: 5, tradeable: true, members: true, stackable: true, noted: false, obtained: true, quantity: 47 },
-      { id: "i21", itemId: 12931, name: "Uncut onyx", slug: "uncut-onyx", categoryId: "cat-zulrah", sortOrder: 6, tradeable: true, members: true, stackable: false, noted: false, obtained: true, quantity: 2 },
-      { id: "i22", itemId: 12929, name: "Onyx bolts (e)", slug: "onyx-bolts-e", categoryId: "cat-zulrah", sortOrder: 7, tradeable: true, members: true, stackable: true, noted: false, obtained: false, quantity: 0 },
-    ],
-  },
-  {
-    id: "cat-cerberus",
-    slug: "cerberus",
-    name: "Cerberus",
-    sortOrder: 3,
-    iconItemId: 13247,
-    obtainedCount: 4,
-    totalCount: 5,
-    itemCount: 5,
-    completionPercent: 80,
-    items: [
-      { id: "i23", itemId: 13247, name: "Primordial crystal", slug: "primordial-crystal", categoryId: "cat-cerberus", sortOrder: 0, tradeable: true, members: true, stackable: false, noted: false, obtained: true, quantity: 1, obtainedAt: new Date("2024-04-05") },
-      { id: "i24", itemId: 13245, name: "Pegasian crystal", slug: "pegasian-crystal", categoryId: "cat-cerberus", sortOrder: 1, tradeable: true, members: true, stackable: false, noted: false, obtained: true, quantity: 1, obtainedAt: new Date("2024-05-22") },
-      { id: "i25", itemId: 13249, name: "Eternal crystal", slug: "eternal-crystal", categoryId: "cat-cerberus", sortOrder: 2, tradeable: true, members: true, stackable: false, noted: false, obtained: true, quantity: 1, obtainedAt: new Date("2024-06-10") },
-      { id: "i26", itemId: 13263, name: "Smouldering stone", slug: "smouldering-stone", categoryId: "cat-cerberus", sortOrder: 3, tradeable: true, members: true, stackable: false, noted: false, obtained: true, quantity: 1, obtainedAt: new Date("2024-07-18") },
-      { id: "i27", itemId: 13265, name: "Jar of souls", slug: "jar-of-souls", categoryId: "cat-cerberus", sortOrder: 4, tradeable: false, members: true, stackable: false, noted: false, obtained: false, quantity: 0 },
-    ],
-  },
-  {
-    id: "cat-vorkath",
-    slug: "vorkath",
-    name: "Vorkath",
-    sortOrder: 4,
-    iconItemId: 22115,
-    obtainedCount: 2,
-    totalCount: 4,
-    itemCount: 4,
-    completionPercent: 50,
-    items: [
-      { id: "i28", itemId: 22115, name: "Dragonbone necklace", slug: "dragonbone-necklace", categoryId: "cat-vorkath", sortOrder: 0, tradeable: true, members: true, stackable: false, noted: false, obtained: true, quantity: 1, obtainedAt: new Date("2024-08-30") },
-      { id: "i29", itemId: 22109, name: "Skeletal visage", slug: "skeletal-visage", categoryId: "cat-vorkath", sortOrder: 1, tradeable: true, members: true, stackable: false, noted: false, obtained: false, quantity: 0 },
-      { id: "i30", itemId: 22111, name: "Vorkath's head", slug: "vorkaths-head", categoryId: "cat-vorkath", sortOrder: 2, tradeable: false, members: true, stackable: false, noted: false, obtained: true, quantity: 1, obtainedAt: new Date("2024-09-14") },
-      { id: "i31", itemId: 21807, name: "Draconic visage", slug: "draconic-visage", categoryId: "cat-vorkath", sortOrder: 3, tradeable: true, members: true, stackable: false, noted: false, obtained: false, quantity: 0 },
-    ],
-  },
-];
+function generateDemoCategories(): CollectionCategoryWithProgress[] {
+  const leafCats = OSRS_CATEGORIES.filter((c) => c.parent !== undefined);
+
+  return leafCats.map((cat) => {
+    const catItems = ALL_COLLECTION_LOG_ITEMS.filter((i) => i.category === cat.slug);
+    const catId = `demo-cat-${cat.slug}`;
+
+    const items: CollectionItemWithStatus[] = catItems.map((item) => {
+      // Deterministic "obtained" based on itemId — gives a realistic ~71% completion spread
+      const obtained = item.itemId % 7 !== 3;
+      const msAgo = (item.itemId * 137891) % (1000 * 60 * 60 * 24 * 365);
+      return {
+        id: `demo-item-${item.slug}`,
+        itemId: item.itemId,
+        name: item.name,
+        slug: item.slug,
+        categoryId: catId,
+        sortOrder: item.sortOrder,
+        tradeable: true,
+        members: true,
+        stackable: false,
+        noted: false,
+        dropSource: item.dropSource,
+        dropRarity: item.dropRarity,
+        dropRarityNum: item.dropRarityNum,
+        obtained,
+        quantity: obtained ? 1 : 0,
+        obtainedAt: obtained ? new Date(Date.now() - msAgo) : null,
+      };
+    });
+
+    const obtainedCount = items.filter((i) => i.obtained).length;
+    const totalCount = items.length;
+
+    return {
+      id: catId,
+      slug: cat.slug,
+      name: cat.name,
+      sortOrder: cat.sortOrder,
+      iconItemId: cat.iconItemId,
+      obtainedCount,
+      totalCount,
+      itemCount: totalCount,
+      completionPercent: totalCount > 0 ? (obtainedCount / totalCount) * 100 : 0,
+      items,
+    };
+  });
+}
+
+export const DEMO_CATEGORIES: CollectionCategoryWithProgress[] = generateDemoCategories();
 
 export const DEMO_GOALS: Goal[] = [
   {

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { Menu, X, Layers, LogIn, LayoutDashboard } from "lucide-react";
+import { Menu, X, Layers, LogIn, LayoutDashboard, Sword } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { PlayerSearch } from "@/components/player-search";
 import { cn } from "@/lib/utils";
@@ -38,6 +38,12 @@ export function TopNav({ showSearch = true, user }: TopNavProps) {
 
           {/* Nav links */}
           <nav className="hidden sm:flex items-center gap-1">
+            <Button variant="ghost" size="sm" asChild>
+              <Link href="/bosses" className="gap-1.5">
+                <Sword className="h-3.5 w-3.5" />
+                Bosses
+              </Link>
+            </Button>
             <Button variant="ghost" size="sm" asChild>
               <Link href="/leaderboards">Leaderboards</Link>
             </Button>
@@ -82,6 +88,7 @@ export function TopNav({ showSearch = true, user }: TopNavProps) {
           )}
           <nav className="flex flex-col gap-1">
             {[
+              { href: "/bosses", label: "Bosses" },
               { href: "/leaderboards", label: "Leaderboards" },
               { href: "/items", label: "Item Database" },
               { href: "/about", label: "About" },
