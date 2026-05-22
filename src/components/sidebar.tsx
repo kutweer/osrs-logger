@@ -15,6 +15,8 @@ import {
   ChevronRight,
   Leaf,
   Package,
+  BarChart2,
+  Sword,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -28,6 +30,8 @@ interface NavItem {
 
 const PUBLIC_NAV: NavItem[] = [
   { href: "/", label: "Home", icon: BookOpen, exact: true },
+  { href: "/bosses", label: "Bosses", icon: Sword },
+  { href: "/hiscores", label: "Hiscores", icon: BarChart2 },
   { href: "/leaderboards", label: "Leaderboards", icon: Trophy },
   { href: "/items", label: "Item Database", icon: Package },
   { href: "/about", label: "About", icon: Info },

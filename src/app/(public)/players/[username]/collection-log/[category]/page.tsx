@@ -120,7 +120,7 @@ export default function CategoryDetailPage({ params }: Props) {
                 alt={cat.name}
                 fill
                 className="object-contain p-4"
-                unoptimized
+                sizes="(max-width: 768px) 100vw, 896px"
                 onError={() => setBossImgError(true)}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-card/80 via-transparent to-transparent" />

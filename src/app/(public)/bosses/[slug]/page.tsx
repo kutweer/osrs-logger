@@ -1,9 +1,9 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { AppShell } from "@/components/app-shell";
 import { Breadcrumbs } from "@/components/breadcrumbs";
+import { BossHeroImage } from "@/components/boss-hero-image";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { OSRS_CATEGORIES } from "@/data/osrs-categories";
@@ -67,26 +67,11 @@ export default async function BossPage({ params }: Props) {
         {/* Hero card */}
         <div className="rounded-xl border border-border bg-card overflow-hidden mb-6">
           {bossImageUrl && (
-            <div className="relative h-48 sm:h-64 bg-gradient-to-b from-muted/40 to-card border-b border-border/40">
-              <Image
-                src={bossImageUrl}
-                alt={boss.name}
-                fill
-                className="object-contain p-6"
-                unoptimized
-                priority
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-card/90 via-card/20 to-transparent" />
-              <div className="absolute bottom-4 left-5">
-                <h1 className="text-2xl sm:text-3xl font-bold text-foreground">{boss.name}</h1>
-              </div>
-            </div>
+            <BossHeroImage src={bossImageUrl} alt={boss.name} />
           )}
 
           <div className="p-5">
-            {!bossImageUrl && (
-              <h1 className="text-2xl font-bold text-foreground mb-3">{boss.name}</h1>
-            )}
+            <h1 className="text-2xl font-bold text-foreground mb-2">{boss.name}</h1>
 
             {boss.description && (
               <p className="text-sm text-muted-foreground leading-relaxed mb-4 max-w-2xl">

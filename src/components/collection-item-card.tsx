@@ -48,7 +48,6 @@ export function CollectionItemCard({
                 width={32}
                 height={32}
                 className="object-contain p-0.5"
-                unoptimized
                 onError={(e) => {
                   (e.currentTarget as HTMLImageElement).src = fallbackSvg(item.itemId);
                 }}
@@ -111,7 +110,6 @@ export function CollectionItemCard({
             width={40}
             height={40}
             className={cn("object-contain p-1", !item.obtained && "grayscale")}
-            unoptimized
             onError={(e) => {
               (e.currentTarget as HTMLImageElement).src = fallbackSvg(item.itemId);
             }}

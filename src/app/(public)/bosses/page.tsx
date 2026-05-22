@@ -61,7 +61,7 @@ export default function BossesPage() {
                       alt={boss.name}
                       fill
                       className="object-contain p-3 group-hover:scale-105 transition-transform duration-200"
-                      unoptimized
+                      sizes="(max-width: 640px) 50vw, 25vw"
                     />
                   ) : (
                     <Sword className="h-8 w-8 text-muted-foreground/30" />

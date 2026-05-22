@@ -53,7 +53,7 @@ function generateDemoCategories(): CollectionCategoryWithProgress[] {
         dropRarityNum: item.dropRarityNum,
         obtained,
         quantity: obtained ? 1 : 0,
-        obtainedAt: obtained ? new Date(Date.now() - msAgo) : null,
+        obtainedAt: obtained ? new Date(Date.now() - msAgo).toISOString() : null,
       };
     });
 
