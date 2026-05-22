@@ -20,7 +20,7 @@ const Progress = React.forwardRef<
       className="h-full w-full flex-1 rounded-sm transition-all duration-500"
       style={{
         transform: `translateX(-${100 - (value ?? 0)}%)`,
-        background: "linear-gradient(90deg, hsl(123 40% 30%) 0%, hsl(123 40% 42%) 100%)",
+        background: "linear-gradient(90deg, hsl(124 50% 25%) 0%, hsl(106 44% 48%) 100%)",
       }}
     />
   </ProgressPrimitive.Root>

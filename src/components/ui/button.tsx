@@ -8,27 +8,30 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
+        // WOM-style primary — deep forest green, cream text
         default:
-          "bg-primary text-primary-foreground shadow hover:bg-primary/90 active:scale-[0.98]",
+          "bg-primary text-primary-foreground shadow-sm hover:bg-primary/90 active:scale-[0.98]",
         destructive:
           "bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90",
+        // WOM-style outline — clean border, no fill
         outline:
-          "border border-border bg-transparent shadow-sm hover:bg-secondary hover:text-foreground",
+          "border border-border bg-transparent shadow-sm hover:bg-secondary hover:border-primary/30 text-foreground",
         secondary:
-          "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80",
+          "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/70",
         ghost:
-          "hover:bg-secondary hover:text-foreground",
+          "hover:bg-secondary hover:text-foreground text-muted-foreground",
         link:
           "text-primary underline-offset-4 hover:underline",
+        // WUR lime-green CTA — the eye-catching action button
         gold:
-          "bg-gradient-to-b from-[#5cbd5e] to-[#3d9040] text-white font-semibold shadow-md hover:from-[#6dd16e] hover:to-[#4aaa4d] active:scale-[0.98]",
+          "bg-accent text-accent-foreground font-semibold shadow-sm hover:bg-accent/90 active:scale-[0.98]",
       },
       size: {
-        default: "h-9 px-4 py-2",
-        sm: "h-8 rounded-md px-3 text-xs",
-        lg: "h-11 rounded-md px-8 text-base",
-        icon: "h-9 w-9",
-        "icon-sm": "h-7 w-7",
+        default:  "h-9 px-4 py-2",
+        sm:       "h-8 rounded-md px-3 text-xs",
+        lg:       "h-11 rounded-md px-8 text-base",
+        icon:     "h-9 w-9",
+        "icon-sm":"h-7 w-7",
       },
     },
     defaultVariants: {

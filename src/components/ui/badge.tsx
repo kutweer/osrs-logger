@@ -14,21 +14,26 @@ const badgeVariants = cva(
         destructive:
           "border-transparent bg-destructive text-destructive-foreground",
         outline:
-          "border-border text-foreground",
+          "border-border text-foreground bg-transparent",
+        // WUR lime tint — used for CTA badges and "active" states
         gold:
-          "border-primary/50 bg-primary/15 text-primary",
+          "border-accent/50 bg-accent/15 text-accent-foreground font-semibold",
+        // Success — light green tint, dark green text (accessible on cream)
         success:
-          "border-green-600/40 bg-green-800/30 text-green-300",
+          "border-green-400/60 bg-green-100 text-green-800",
+        // Warning — amber tint
         warning:
-          "border-amber-600/40 bg-amber-900/30 text-amber-300",
+          "border-amber-400/50 bg-amber-100 text-amber-800",
+        // Muted — warm grey
         muted:
           "border-border bg-muted text-muted-foreground",
+        // Account type badges
         ironman:
-          "border-transparent bg-zinc-700/50 text-zinc-300",
+          "border-transparent bg-slate-200 text-slate-700",
         hcim:
-          "border-transparent bg-red-900/40 text-red-400",
+          "border-transparent bg-red-100 text-red-700",
         uim:
-          "border-transparent bg-purple-900/40 text-purple-400",
+          "border-transparent bg-purple-100 text-purple-700",
       },
     },
     defaultVariants: {

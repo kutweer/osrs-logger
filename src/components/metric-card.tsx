@@ -61,7 +61,7 @@ export function MetricCard({
             <div
               className={cn(
                 "text-xs font-medium",
-                trend.direction === "up" && "text-green-400",
+                trend.direction === "up" && "text-green-700",
                 trend.direction === "down" && "text-red-400",
                 trend.direction === "neutral" && "text-muted-foreground"
               )}

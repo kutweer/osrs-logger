@@ -3,62 +3,65 @@
 @tailwind utilities;
 
 /* ─────────────────────────────────────────────
-   WUR Deep Forest Theme — CSS custom properties
-   Inspired by Wageningen University & Research
-   Nature greens · Earth amber · Sage whites
+   WUR × WOM Design System
+   Wageningen University & Research pallete
+   combined with Wise Old Man UI clarity.
+
+   Warm cream backgrounds · deep forest green ·
+   bright lime accent · academic lightness.
    ───────────────────────────────────────────── */
 
 @layer base {
   :root {
-    /* ── Backgrounds ──────────────────────────── */
-    --background: 118 28% 7%;          /* #0d1a0c — deep forest floor */
-    --foreground: 112 30% 91%;         /* #ddeedd — moonlit foliage   */
+    /* ── Backgrounds ─────────────────────────── */
+    --background:  40 44% 94%;          /* #F5F0E7 warm parchment cream  */
+    --foreground: 128 38% 14%;          /* #1A3520 deep forest green-black*/
 
     /* ── Card / surface layers ───────────────── */
-    --card: 118 26% 10%;               /* #121f11 — dark moss         */
-    --card-foreground: 112 25% 88%;
+    --card:          0  0% 100%;        /* #FFFFFF clean white            */
+    --card-foreground: 128 38% 14%;
 
-    --popover: 118 28% 9%;
-    --popover-foreground: 112 25% 88%;
+    --popover:       0  0% 100%;
+    --popover-foreground: 128 38% 14%;
 
-    /* ── Primary — WUR forest green ──────────── */
-    --primary: 123 40% 40%;            /* #3d9040 — rich leaf green   */
-    --primary-foreground: 112 30% 97%; /* near-white on green         */
+    /* ── Primary — WUR deep forest green ─────── */
+    --primary:     124 50% 22%;         /* #1C5A22 deep WUR forest green  */
+    --primary-foreground: 40 44% 96%;   /* cream on deep green             */
 
-    /* ── Secondary — dark mossy panel ───────── */
-    --secondary: 118 22% 16%;          /* #1a2c1a — dark forest panel */
-    --secondary-foreground: 112 22% 82%;
+    /* ── Secondary — pale sage panel ────────── */
+    --secondary:    90 22% 91%;         /* #E8EDE0 very light sage         */
+    --secondary-foreground: 128 35% 18%;
 
     /* ── Muted ───────────────────────────────── */
-    --muted: 118 20% 13%;              /* #172417                     */
-    --muted-foreground: 116 14% 54%;   /* #7a9078 — sage muted text   */
+    --muted:        40 22% 90%;         /* #EAE5DA warm muted              */
+    --muted-foreground: 120  8% 42%;    /* #5F6F60 medium sage             */
 
-    /* ── Accent — warm earth amber ──────────── */
-    --accent: 36 68% 42%;              /* #b87c1e — bark / soil       */
-    --accent-foreground: 112 30% 97%;
+    /* ── Accent — WUR lime / bright green ───── */
+    --accent:      106 44% 48%;         /* #65BC3E bright lime green       */
+    --accent-foreground: 128 52% 10%;   /* dark green text on lime         */
 
     /* ── Destructive ─────────────────────────── */
-    --destructive: 4 65% 42%;
-    --destructive-foreground: 112 30% 97%;
+    --destructive:   5 58% 47%;         /* #C03530 accessible red          */
+    --destructive-foreground: 0 0% 100%;
 
     /* ── Borders & inputs ────────────────────── */
-    --border: 118 20% 18%;             /* #1e3020 — dark forest edge  */
-    --input:  118 20% 14%;
-    --ring:   123 40% 40%;             /* forest green focus ring     */
+    --border:       90 14% 82%;         /* #D0D8C8 light sage border       */
+    --input:        88 18% 88%;         /* #DFE8D5 input bg                */
+    --ring:        124 50% 22%;         /* deep green focus ring           */
 
     --radius: 0.5rem;
 
-    /* ── Chart colours (nature palette) ──────── */
-    --chart-1: 123 40% 40%;            /* primary leaf green          */
-    --chart-2: 100 35% 50%;            /* lighter sage green          */
-    --chart-3:  36 68% 42%;            /* earth amber                 */
-    --chart-4: 160 35% 40%;            /* teal-moss                   */
-    --chart-5:  15 55% 40%;            /* warm terracotta             */
+    /* ── Chart colours ───────────────────────── */
+    --chart-1: 124 50% 22%;             /* deep forest green               */
+    --chart-2: 106 44% 48%;             /* lime accent                     */
+    --chart-3:  36 65% 46%;             /* warm amber                      */
+    --chart-4: 160 35% 38%;             /* teal-moss                       */
+    --chart-5:  15 52% 44%;             /* terracotta                      */
   }
 }
 
 /* ─────────────────────────────────────────────
-   Base element styles
+   Base styles
    ───────────────────────────────────────────── */
 
 @layer base {
@@ -74,27 +77,18 @@
 
   h1, h2, h3, h4, h5, h6 {
     @apply font-semibold tracking-tight;
+    color: hsl(var(--foreground));
   }
 
   a {
-    @apply text-primary hover:text-accent transition-colors;
+    @apply text-primary hover:text-primary/80 transition-colors;
   }
 
-  /* Nature-inspired scrollbar */
-  ::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
-  }
-  ::-webkit-scrollbar-track {
-    @apply bg-muted;
-  }
-  ::-webkit-scrollbar-thumb {
-    background: hsl(var(--border));
-    border-radius: 3px;
-  }
-  ::-webkit-scrollbar-thumb:hover {
-    background: hsl(var(--primary) / 0.6);
-  }
+  /* Clean scrollbar */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track  { background: hsl(var(--muted)); }
+  ::-webkit-scrollbar-thumb  { background: hsl(var(--border)); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: hsl(var(--primary) / 0.5); }
 }
 
 /* ─────────────────────────────────────────────
@@ -102,73 +96,61 @@
    ───────────────────────────────────────────── */
 
 @layer components {
-  /* Nature-inspired subtle border */
+
+  /* Clean card border — subtle, WOM-inspired */
   .osrs-border {
     border: 1px solid hsl(var(--border));
-    box-shadow:
-      inset 1px 1px 0 hsl(var(--primary) / 0.06),
-      0 1px 3px rgba(0, 0, 0, 0.35);
+    box-shadow: 0 1px 3px rgba(26, 53, 32, 0.06);
   }
 
   .osrs-border-gold {
-    border: 1px solid hsl(var(--primary) / 0.35);
-    box-shadow:
-      inset 0 0 0 1px hsl(var(--primary) / 0.08),
-      0 0 10px hsl(var(--primary) / 0.12);
+    border: 1px solid hsl(var(--primary) / 0.30);
+    box-shadow: 0 0 0 1px hsl(var(--primary) / 0.08);
   }
 
-  /* WUR nature gradient text — used for brand logo / hero accents */
+  /* WUR × WOM brand gradient — deep green → lime */
   .text-gold-gradient {
-    background: linear-gradient(135deg, #72c474 0%, #3d9040 55%, #1e5921 100%);
+    background: linear-gradient(135deg, #2d8a34 0%, #1C5A22 60%, #0d3a14 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
 
-  /* Skeleton shimmer */
+  /* Skeleton shimmer — light mode */
   .skeleton {
     background: linear-gradient(
       90deg,
       hsl(var(--muted)) 25%,
-      hsl(var(--muted) / 0.5) 50%,
+      hsl(var(--muted) / 0.4) 50%,
       hsl(var(--muted)) 75%
     );
     background-size: 200% 100%;
     animation: shimmer 1.5s infinite;
   }
 
-  /* Item obtained / missing indicators */
+  /* Obtained item — light green tint */
   .item-obtained {
-    @apply ring-1 ring-green-600/50 bg-green-900/10;
+    @apply ring-1 ring-green-400/50 bg-green-50;
   }
 
+  /* Missing item — faded out */
   .item-missing {
     @apply opacity-40 grayscale;
   }
 
-  /* Progress bar — forest green gradient */
-  .progress-osrs {
-    @apply h-2 rounded-sm overflow-hidden bg-muted;
-  }
-
-  .progress-osrs-fill {
-    @apply h-full rounded-sm transition-all duration-500;
-    background: linear-gradient(90deg, hsl(var(--primary) / 0.75), hsl(var(--primary)));
-  }
-
-  /* Category card */
+  /* Category card hover */
   .category-card {
     @apply osrs-border rounded-lg bg-card p-4 transition-all duration-150;
   }
   .category-card:hover {
-    @apply bg-secondary;
-    border-color: hsl(var(--primary) / 0.4);
+    @apply bg-secondary/60;
+    border-color: hsl(var(--primary) / 0.35);
   }
 
-  /* WUR nature glow — hero section radial */
+  /* Hero radial glow — warm sage */
   .nature-glow {
-    background: radial-gradient(ellipse 60% 40% at 50% 0%,
-      hsl(123 40% 40% / 0.09) 0%, transparent 70%);
+    background: radial-gradient(ellipse 70% 50% at 50% -10%,
+      hsl(106 44% 48% / 0.10) 0%, transparent 65%);
   }
 }
 
@@ -177,7 +159,7 @@
    ───────────────────────────────────────────── */
 
 @keyframes shimmer {
-  0%   { background-position: 200% 0; }
+  0%   { background-position:  200% 0; }
   100% { background-position: -200% 0; }
 }
 
@@ -186,6 +168,4 @@
   to   { opacity: 1; transform: translateY(0); }
 }
 
-.animate-fade-in {
-  animation: fadeIn 0.2s ease-out forwards;
-}
+.animate-fade-in { animation: fadeIn 0.2s ease-out forwards; }

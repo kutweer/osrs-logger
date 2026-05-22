@@ -81,7 +81,7 @@ export default function BossesPage() {
                   </h3>
                   <div className="flex items-center justify-between text-[11px] text-muted-foreground mb-1.5">
                     <span>{obtained}/{total} items</span>
-                    <span className={cn("font-semibold tabular-nums", complete ? "text-green-400" : "text-primary")}>
+                    <span className={cn("font-semibold tabular-nums", complete ? "text-green-700" : "text-primary")}>
                       {pct.toFixed(0)}%
                     </span>
                   </div>

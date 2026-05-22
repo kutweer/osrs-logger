@@ -70,7 +70,7 @@ export default async function SyncPage() {
               <p className="text-[10px] text-muted-foreground uppercase tracking-wider">Provider</p>
             </div>
             <div>
-              <p className="text-green-400 font-semibold">Active</p>
+              <p className="text-green-700 font-semibold">Active</p>
               <p className="text-[10px] text-muted-foreground uppercase tracking-wider">Status</p>
             </div>
           </div>
@@ -105,11 +105,11 @@ export default async function SyncPage() {
                   <td className="px-4 py-2.5">
                     <div className="flex items-center gap-1.5">
                       {job.status === "SUCCESS" ? (
-                        <CheckCircle2 className="h-3.5 w-3.5 text-green-400" />
+                        <CheckCircle2 className="h-3.5 w-3.5 text-green-700" />
                       ) : (
                         <AlertCircle className="h-3.5 w-3.5 text-red-400" />
                       )}
-                      <span className={job.status === "SUCCESS" ? "text-green-400" : "text-red-400"}>
+                      <span className={job.status === "SUCCESS" ? "text-green-700" : "text-red-400"}>
                         {job.status}
                       </span>
                       {job.error && (

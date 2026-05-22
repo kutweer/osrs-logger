@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { Menu, X, Layers, LogIn, LayoutDashboard, Sword } from "lucide-react";
+import { Menu, X, Leaf, LogIn, LayoutDashboard, Sword, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { PlayerSearch } from "@/components/player-search";
 import { cn } from "@/lib/utils";
@@ -16,13 +16,14 @@ export function TopNav({ showSearch = true, user }: TopNavProps) {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur-sm">
+    <header className="sticky top-0 z-50 border-b border-border bg-card/95 backdrop-blur-sm shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="flex h-14 items-center justify-between gap-4">
+
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 flex-shrink-0">
-            <div className="flex h-7 w-7 items-center justify-center rounded-md bg-primary/20 border border-primary/30">
-              <Layers className="h-4 w-4 text-primary" />
+          <Link href="/" className="flex items-center gap-2.5 flex-shrink-0 group">
+            <div className="flex h-7 w-7 items-center justify-center rounded-full bg-primary text-primary-foreground">
+              <Leaf className="h-3.5 w-3.5" />
             </div>
             <span className="text-sm font-bold text-gold-gradient hidden sm:block">
               ClogLog
@@ -31,27 +32,34 @@ export function TopNav({ showSearch = true, user }: TopNavProps) {
 
           {/* Search bar — center */}
           {showSearch && (
-            <div className="flex-1 max-w-md hidden sm:block">
+            <div className="flex-1 max-w-sm hidden sm:block">
               <PlayerSearch size="sm" placeholder="Search player…" />
             </div>
           )}
 
           {/* Nav links */}
-          <nav className="hidden sm:flex items-center gap-1">
-            <Button variant="ghost" size="sm" asChild>
-              <Link href="/bosses" className="gap-1.5">
-                <Sword className="h-3.5 w-3.5" />
-                Bosses
-              </Link>
-            </Button>
-            <Button variant="ghost" size="sm" asChild>
+          <nav className="hidden sm:flex items-center gap-0.5">
+            {[
+              { href: "/bosses", label: "Bosses", icon: Sword },
+            ].map(({ href, label, icon: Icon }) => (
+              <Button key={href} variant="ghost" size="sm" asChild className="text-muted-foreground hover:text-foreground">
+                <Link href={href} className="gap-1.5">
+                  <Icon className="h-3.5 w-3.5" />
+                  {label}
+                </Link>
+              </Button>
+            ))}
+            <Button variant="ghost" size="sm" asChild className="text-muted-foreground hover:text-foreground">
               <Link href="/leaderboards">Leaderboards</Link>
             </Button>
-            <Button variant="ghost" size="sm" asChild>
+            <Button variant="ghost" size="sm" asChild className="text-muted-foreground hover:text-foreground">
               <Link href="/items">Items</Link>
             </Button>
+
+            <div className="w-px h-5 bg-border mx-1" />
+
             {user ? (
-              <Button variant="outline" size="sm" asChild>
+              <Button variant="default" size="sm" asChild>
                 <Link href="/dashboard" className="gap-1.5">
                   <LayoutDashboard className="h-3.5 w-3.5" />
                   Dashboard
@@ -67,11 +75,11 @@ export function TopNav({ showSearch = true, user }: TopNavProps) {
             )}
           </nav>
 
-          {/* Mobile menu toggle */}
+          {/* Mobile toggle */}
           <Button
             variant="ghost"
             size="icon"
-            className="sm:hidden"
+            className="sm:hidden text-muted-foreground"
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-label="Toggle menu"
           >
@@ -82,16 +90,16 @@ export function TopNav({ showSearch = true, user }: TopNavProps) {
 
       {/* Mobile menu */}
       {mobileOpen && (
-        <div className="sm:hidden border-t border-border bg-card/95 px-4 py-3 space-y-3 animate-fade-in">
+        <div className="sm:hidden border-t border-border bg-card px-4 py-3 space-y-3 animate-fade-in">
           {showSearch && (
             <PlayerSearch size="sm" placeholder="Search player…" className="w-full" />
           )}
-          <nav className="flex flex-col gap-1">
+          <nav className="flex flex-col gap-0.5">
             {[
-              { href: "/bosses", label: "Bosses" },
-              { href: "/leaderboards", label: "Leaderboards" },
-              { href: "/items", label: "Item Database" },
-              { href: "/about", label: "About" },
+              { href: "/bosses",       label: "Bosses"        },
+              { href: "/leaderboards", label: "Leaderboards"  },
+              { href: "/items",        label: "Item Database" },
+              { href: "/about",        label: "About"         },
             ].map((link) => (
               <Link
                 key={link.href}

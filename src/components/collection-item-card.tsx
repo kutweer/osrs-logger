@@ -8,6 +8,10 @@ import { Badge } from "@/components/ui/badge";
 import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from "@/components/ui/tooltip";
 import type { CollectionItemWithStatus } from "@/types";
 
+// Fallback SVG for failed item images — light-mode friendly
+const fallbackSvg = (id: number) =>
+  `data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40"><rect width="40" height="40" fill="%23E8EDE0" rx="4"/><text x="50%25" y="55%25" text-anchor="middle" dy=".1em" font-size="9" fill="%235F6F60">%23${id}</text></svg>`;
+
 interface CollectionItemCardProps {
   item: CollectionItemWithStatus;
   compact?: boolean;
@@ -32,10 +36,10 @@ export function CollectionItemCard({
           <TooltipTrigger asChild>
             <div
               className={cn(
-                "relative flex items-center justify-center rounded-sm border w-10 h-10 cursor-default transition-all duration-150",
+                "relative flex items-center justify-center rounded-md border w-10 h-10 cursor-default transition-all duration-150",
                 item.obtained
-                  ? "border-green-700/40 bg-green-900/10 hover:border-green-600/60"
-                  : "border-border/40 bg-muted/20 opacity-40 grayscale"
+                  ? "border-green-400/60 bg-green-50 hover:border-green-500/80"
+                  : "border-border/60 bg-muted/30 opacity-40 grayscale"
               )}
             >
               <Image
@@ -46,12 +50,11 @@ export function CollectionItemCard({
                 className="object-contain p-0.5"
                 unoptimized
                 onError={(e) => {
-                  (e.currentTarget as HTMLImageElement).src =
-                    `data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><rect width="32" height="32" fill="%23333"/><text x="50%" y="55%" text-anchor="middle" dy=".1em" font-size="10" fill="%23888">${item.itemId}</text></svg>`;
+                  (e.currentTarget as HTMLImageElement).src = fallbackSvg(item.itemId);
                 }}
               />
               {item.obtained && item.quantity > 1 && (
-                <span className="absolute -bottom-1 -right-1 text-[8px] font-bold text-primary bg-background rounded-sm px-0.5 leading-tight">
+                <span className="absolute -bottom-1 -right-1 text-[8px] font-bold text-primary bg-white rounded-sm px-0.5 leading-tight border border-border/60">
                   {formatNumber(item.quantity)}
                 </span>
               )}
@@ -61,12 +64,12 @@ export function CollectionItemCard({
             <div className="space-y-1">
               <p className="font-semibold text-foreground">{item.name}</p>
               {item.dropRarity && (
-                <p className="text-muted-foreground">Drop: {item.dropRarity}</p>
+                <p className="text-muted-foreground text-xs">Drop: {item.dropRarity}</p>
               )}
               {item.dropSource && (
-                <p className="text-muted-foreground">Source: {item.dropSource}</p>
+                <p className="text-muted-foreground text-xs">Source: {item.dropSource}</p>
               )}
-              <p className={cn("text-xs font-medium", item.obtained ? "text-green-400" : "text-muted-foreground")}>
+              <p className={cn("text-xs font-medium", item.obtained ? "text-green-700" : "text-muted-foreground")}>
                 {item.obtained ? `Obtained${item.quantity > 1 ? ` × ${formatNumber(item.quantity)}` : ""}` : "Not obtained"}
               </p>
             </div>
@@ -79,10 +82,10 @@ export function CollectionItemCard({
   return (
     <div
       className={cn(
-        "group relative rounded-md border p-3 transition-all duration-150",
+        "group relative rounded-lg border p-3 transition-all duration-150",
         item.obtained
-          ? "border-green-700/30 bg-green-900/5 hover:border-green-600/50"
-          : "border-border/50 bg-card/50 opacity-60"
+          ? "border-green-300/70 bg-green-50/80 hover:border-green-400/80 hover:shadow-sm"
+          : "border-border/60 bg-card/60 opacity-55"
       )}
     >
       {showGoalMarker && onGoalToggle && (
@@ -94,14 +97,14 @@ export function CollectionItemCard({
           <Star
             className={cn(
               "h-3.5 w-3.5",
-              isGoal ? "fill-primary text-primary" : "text-muted-foreground"
+              isGoal ? "fill-accent text-accent" : "text-muted-foreground"
             )}
           />
         </button>
       )}
 
       <div className="flex items-start gap-3">
-        <div className="relative flex-shrink-0 w-12 h-12 rounded-sm border border-border/50 bg-muted/30 flex items-center justify-center">
+        <div className="relative flex-shrink-0 w-12 h-12 rounded-md border border-border/60 bg-secondary/40 flex items-center justify-center">
           <Image
             src={iconUrl}
             alt={item.name}
@@ -110,8 +113,7 @@ export function CollectionItemCard({
             className={cn("object-contain p-1", !item.obtained && "grayscale")}
             unoptimized
             onError={(e) => {
-              (e.currentTarget as HTMLImageElement).src =
-                `data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40"><rect width="40" height="40" fill="%23222"/><text x="50%" y="55%" text-anchor="middle" font-size="9" fill="%23666">#${item.itemId}</text></svg>`;
+              (e.currentTarget as HTMLImageElement).src = fallbackSvg(item.itemId);
             }}
           />
         </div>
@@ -125,7 +127,7 @@ export function CollectionItemCard({
               href={getWikiUrl(item.name)}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex-shrink-0 text-muted-foreground hover:text-foreground transition-colors"
+              className="flex-shrink-0 text-muted-foreground hover:text-primary transition-colors"
               title="OSRS Wiki"
             >
               <ExternalLink className="h-3 w-3" />

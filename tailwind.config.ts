@@ -44,23 +44,24 @@ const config: Config = {
         input:  "hsl(var(--input))",
         ring:   "hsl(var(--ring))",
 
-        /* WUR nature colour tokens */
-        nature: {
-          forest:   "#3d9040",   /* primary leaf green  */
-          leaf:     "#5cb85e",   /* lighter spring leaf */
-          sage:     "#7a9078",   /* sage muted          */
-          moss:     "#1a2c1a",   /* dark moss panel     */
-          earth:    "#b87c1e",   /* warm earth amber    */
-          "earth-light": "#d49a3a",
-          bark:     "#7a5010",   /* deep bark brown     */
-          soil:     "#0d1a0c",   /* deep soil / bg      */
+        /* WUR × WOM design tokens */
+        wur: {
+          cream:      "#F5F0E7",
+          forest:     "#1C5A22",   /* deep WUR green  */
+          "forest-lg":"#2d8a34",   /* medium green    */
+          lime:       "#65BC3E",   /* WUR lime accent */
+          "lime-light":"#8ED16B",
+          sage:       "#E8EDE0",   /* pale sage panel */
+          "sage-dark": "#5F6F60",  /* muted sage text */
+          bark:       "#7A5010",
+          amber:      "#C17F24",
         },
 
-        /* Keep "gold" alias pointing to earth-amber for backwards compat */
+        /* Keep gold alias → amber-earth for any remaining references */
         gold: {
-          DEFAULT: "#b87c1e",
-          light:   "#d49a3a",
-          dark:    "#7a5010",
+          DEFAULT: "#C17F24",
+          light:   "#D49A3A",
+          dark:    "#7A5010",
         },
       },
       fontFamily: {
@@ -85,22 +86,11 @@ const config: Config = {
           "0%":   { backgroundPosition: "-200% 0" },
           "100%": { backgroundPosition: "200% 0"  },
         },
-        "pulse-nature": {
-          "0%, 100%": { boxShadow: "0 0 0 0 rgba(61, 144, 64, 0.4)" },
-          "50%":      { boxShadow: "0 0 0 6px rgba(61, 144, 64, 0)" },
-        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up":   "accordion-up 0.2s ease-out",
         shimmer:          "shimmer 2s infinite linear",
-        "pulse-nature":   "pulse-nature 2s infinite",
-      },
-      backgroundImage: {
-        shimmer:
-          "linear-gradient(90deg, transparent 0%, rgba(61,144,64,0.08) 50%, transparent 100%)",
-        "nature-gradient":
-          "linear-gradient(135deg, #72c474 0%, #3d9040 55%, #1e5921 100%)",
       },
     },
   },

@@ -118,7 +118,7 @@ export default async function LandingPage() {
           {/* Metric strip */}
           <div className="grid grid-cols-2 sm:grid-cols-4 divide-x divide-border/50 border-b border-border">
             {[
-              { label: "Obtained", value: formatNumber(DEMO_PLAYER.collectionLogObtained), icon: CheckCircle2, color: "text-green-400" },
+              { label: "Obtained", value: formatNumber(DEMO_PLAYER.collectionLogObtained), icon: CheckCircle2, color: "text-green-700" },
               { label: "Missing", value: formatNumber(DEMO_PLAYER.collectionLogTotal - DEMO_PLAYER.collectionLogObtained), icon: Target, color: "text-amber-400" },
               { label: "Combat Lv.", value: "126", icon: Sword, color: "text-primary" },
               { label: "Active Goals", value: "5", icon: TrendingUp, color: "text-blue-400" },

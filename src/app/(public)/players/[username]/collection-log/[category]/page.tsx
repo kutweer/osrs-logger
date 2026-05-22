@@ -158,7 +158,7 @@ export default function CategoryDetailPage({ params }: Props) {
 
               <div className="flex gap-5 sm:border-l sm:border-border sm:pl-5">
                 <div className="text-center">
-                  <div className="text-xl font-bold text-green-400 tabular-nums">{cat.obtainedCount}</div>
+                  <div className="text-xl font-bold text-green-700 tabular-nums">{cat.obtainedCount}</div>
                   <div className="text-[10px] text-muted-foreground uppercase tracking-wider">Obtained</div>
                 </div>
                 <div className="text-center">

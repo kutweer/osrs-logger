@@ -24,7 +24,7 @@ const ENDPOINTS = [
 ];
 
 const METHOD_COLORS: Record<string, string> = {
-  GET: "text-green-400 bg-green-900/30",
+  GET: "text-green-700 bg-green-100 font-mono",
   POST: "text-blue-400 bg-blue-900/30",
   PATCH: "text-amber-400 bg-amber-900/30",
   DELETE: "text-red-400 bg-red-900/30",

@@ -72,7 +72,7 @@ export function ItemGrid({
                   <span
                     className={cn(
                       "text-xs font-medium",
-                      item.obtained ? "text-green-400" : "text-muted-foreground"
+                      item.obtained ? "text-green-700" : "text-muted-foreground"
                     )}
                   >
                     {item.obtained ? "Obtained" : "Missing"}

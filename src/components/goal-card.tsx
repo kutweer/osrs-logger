@@ -39,8 +39,8 @@ const STATUS_STYLES: Record<GoalStatus, string> = {
 const PRIORITY_STYLES: Record<GoalPriority, string> = {
   LOW: "text-muted-foreground",
   MEDIUM: "text-foreground",
-  HIGH: "text-amber-400",
-  CRITICAL: "text-red-400",
+  HIGH: "text-amber-700",
+  CRITICAL: "text-red-700",
 };
 
 interface GoalCardProps {
@@ -59,19 +59,19 @@ export function GoalCard({ goal, onPin, onStatusChange, className }: GoalCardPro
   return (
     <div
       className={cn(
-        "relative rounded-md border bg-card p-4 transition-all duration-150",
+        "relative rounded-lg border bg-card p-4 transition-all duration-150",
         isComplete
-          ? "border-green-700/30 bg-green-900/5"
+          ? "border-green-300/60 bg-green-50/60"
           : isPaused
-          ? "border-border/40 opacity-70"
+          ? "border-border/50 opacity-70"
           : goal.pinned
-          ? "border-primary/30 bg-gradient-to-br from-card to-secondary/20"
-          : "border-border hover:border-primary/20",
+          ? "border-primary/30 bg-secondary/30"
+          : "border-border hover:border-primary/25 hover:shadow-sm",
         className
       )}
     >
       {goal.pinned && !isComplete && (
-        <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-primary/50 to-transparent rounded-t-md" />
+        <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-accent/70 to-transparent rounded-t-lg" />
       )}
 
       <div className="flex items-start justify-between gap-3">
@@ -79,13 +79,13 @@ export function GoalCard({ goal, onPin, onStatusChange, className }: GoalCardPro
           <div
             className={cn(
               "flex-shrink-0 w-8 h-8 rounded-md flex items-center justify-center mt-0.5",
-              isComplete ? "bg-green-900/30" : "bg-muted/50"
+              isComplete ? "bg-green-100" : "bg-secondary"
             )}
           >
             <Icon
               className={cn(
                 "h-4 w-4",
-                isComplete ? "text-green-400" : "text-muted-foreground"
+                isComplete ? "text-green-700" : "text-muted-foreground"
               )}
             />
           </div>
@@ -125,7 +125,7 @@ export function GoalCard({ goal, onPin, onStatusChange, className }: GoalCardPro
               size="icon-sm"
               onClick={() => onPin(goal.id)}
               title={goal.pinned ? "Unpin" : "Pin goal"}
-              className="opacity-0 group-hover:opacity-100"
+              className="opacity-0 group-hover:opacity-100 transition-opacity"
             >
               {goal.pinned ? (
                 <PinOff className="h-3.5 w-3.5 text-primary" />
@@ -138,12 +138,7 @@ export function GoalCard({ goal, onPin, onStatusChange, className }: GoalCardPro
             <Button
               variant="ghost"
               size="icon-sm"
-              onClick={() =>
-                onStatusChange(
-                  goal.id,
-                  isPaused ? "ACTIVE" : "PAUSED"
-                )
-              }
+              onClick={() => onStatusChange(goal.id, isPaused ? "ACTIVE" : "PAUSED")}
               title={isPaused ? "Resume" : "Pause"}
             >
               <Pause className="h-3.5 w-3.5" />

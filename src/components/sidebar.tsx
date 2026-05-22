@@ -13,7 +13,7 @@ import {
   Info,
   Code2,
   ChevronRight,
-  Layers,
+  Leaf,
   Package,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -91,8 +91,8 @@ export function Sidebar({ className, showDashboard }: SidebarProps) {
     >
       {/* Logo */}
       <div className="flex items-center gap-2.5 px-4 py-4 border-b border-border">
-        <div className="flex h-8 w-8 items-center justify-center rounded-md bg-primary/20 border border-primary/30">
-          <Layers className="h-4 w-4 text-primary" />
+        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-primary-foreground">
+          <Leaf className="h-4 w-4" />
         </div>
         <div>
           <span className="text-sm font-bold text-gold-gradient">ClogLog</span>

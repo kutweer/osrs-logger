@@ -98,7 +98,7 @@ export default async function BossPage({ params }: Props) {
               <div className="flex-1 space-y-1.5">
                 <div className="flex justify-between text-xs">
                   <span className="text-muted-foreground">Collection Log Progress</span>
-                  <span className={isComplete ? "text-green-400 font-semibold" : "text-primary font-semibold"}>
+                  <span className={isComplete ? "text-green-700 font-semibold" : "text-primary font-semibold"}>
                     {pct.toFixed(1)}%
                   </span>
                 </div>
