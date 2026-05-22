@@ -51,6 +51,9 @@ export default async function BossPage({ params }: Props) {
   const bossImageUrl = boss.wikiImageSlug
     ? `https://oldschool.runescape.wiki/images/${boss.wikiImageSlug}.png`
     : null;
+  const fallbackSpriteUrl = boss.iconItemId
+    ? `https://static.runelite.net/cache/item/icon/${boss.iconItemId}.png`
+    : undefined;
   const wikiUrl = `https://oldschool.runescape.wiki/w/${boss.wikiImageSlug ?? boss.name.replace(/ /g, "_")}`;
 
   return (
@@ -67,7 +70,11 @@ export default async function BossPage({ params }: Props) {
         {/* Hero card */}
         <div className="rounded-xl border border-border bg-card overflow-hidden mb-6">
           {bossImageUrl && (
-            <BossHeroImage src={bossImageUrl} alt={boss.name} />
+            <BossHeroImage
+              src={bossImageUrl}
+              alt={boss.name}
+              fallbackSrc={fallbackSpriteUrl}
+            />
           )}
 
           <div className="p-5">

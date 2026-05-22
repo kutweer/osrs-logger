@@ -23,8 +23,9 @@ export function CollectionCategoryCard({
 }: CollectionCategoryCardProps) {
   const percent = category.completionPercent;
   const isComplete = category.obtainedCount === category.totalCount;
+  // Use RuneLite CDN for category icon sprites — reliable, by item ID
   const iconUrl = category.iconItemId
-    ? `https://oldschool.runescape.wiki/images/${category.iconItemId}_detail.png`
+    ? `https://static.runelite.net/cache/item/icon/${category.iconItemId}.png`
     : null;
 
   if (compact) {
@@ -38,7 +39,7 @@ export function CollectionCategoryCard({
               width={28}
               height={28}
               className="object-contain opacity-80 group-hover:opacity-100"
-              unoptimized
+
             />
           )}
           <div className="flex-1 min-w-0">
@@ -75,7 +76,7 @@ export function CollectionCategoryCard({
                   width={32}
                   height={32}
                   className="object-contain p-0.5"
-                  unoptimized
+    
                   onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = "none"; }}
                 />
               </div>
