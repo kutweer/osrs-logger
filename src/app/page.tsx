@@ -22,14 +22,10 @@ export default async function LandingPage() {
 
       {/* ── Hero ──────────────────────────────────────────── */}
       <section className="relative overflow-hidden border-b border-border bg-gradient-to-b from-background via-background to-card/40">
-        {/* Gold radial glow */}
+        {/* Nature radial glow */}
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-0"
-          style={{
-            background:
-              "radial-gradient(ellipse 60% 40% at 50% 0%, hsl(42 71% 47% / 0.07) 0%, transparent 70%)",
-          }}
+          className="pointer-events-none absolute inset-0 nature-glow"
         />
 
         <div className="max-w-5xl mx-auto px-4 sm:px-6 py-20 sm:py-28 text-center relative">

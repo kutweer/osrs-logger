@@ -16,11 +16,11 @@ const badgeVariants = cva(
         outline:
           "border-border text-foreground",
         gold:
-          "border-primary/40 bg-primary/10 text-primary",
+          "border-primary/50 bg-primary/15 text-primary",
         success:
-          "border-transparent bg-green-900/40 text-green-400 border-green-700/40",
+          "border-green-600/40 bg-green-800/30 text-green-300",
         warning:
-          "border-transparent bg-amber-900/40 text-amber-400 border-amber-700/40",
+          "border-amber-600/40 bg-amber-900/30 text-amber-300",
         muted:
           "border-border bg-muted text-muted-foreground",
         ironman:

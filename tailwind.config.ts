@@ -41,26 +41,26 @@ const config: Config = {
           foreground: "hsl(var(--destructive-foreground))",
         },
         border: "hsl(var(--border))",
-        input: "hsl(var(--input))",
-        ring: "hsl(var(--ring))",
-        gold: {
-          DEFAULT: "#c9a227",
-          light: "#e8c547",
-          dark: "#9b7a18",
+        input:  "hsl(var(--input))",
+        ring:   "hsl(var(--ring))",
+
+        /* WUR nature colour tokens */
+        nature: {
+          forest:   "#3d9040",   /* primary leaf green  */
+          leaf:     "#5cb85e",   /* lighter spring leaf */
+          sage:     "#7a9078",   /* sage muted          */
+          moss:     "#1a2c1a",   /* dark moss panel     */
+          earth:    "#b87c1e",   /* warm earth amber    */
+          "earth-light": "#d49a3a",
+          bark:     "#7a5010",   /* deep bark brown     */
+          soil:     "#0d1a0c",   /* deep soil / bg      */
         },
-        osrs: {
-          brown: {
-            900: "#1a0f00",
-            800: "#241508",
-            700: "#2f1c0e",
-            600: "#3d2513",
-            500: "#4d2f18",
-            400: "#6b4226",
-            300: "#8b5e3c",
-          },
-          parchment: "#f0e6d0",
-          gold: "#c9a227",
-          "gold-light": "#e8c547",
+
+        /* Keep "gold" alias pointing to earth-amber for backwards compat */
+        gold: {
+          DEFAULT: "#b87c1e",
+          light:   "#d49a3a",
+          dark:    "#7a5010",
         },
       },
       fontFamily: {
@@ -75,30 +75,32 @@ const config: Config = {
       keyframes: {
         "accordion-down": {
           from: { height: "0" },
-          to: { height: "var(--radix-accordion-content-height)" },
+          to:   { height: "var(--radix-accordion-content-height)" },
         },
         "accordion-up": {
           from: { height: "var(--radix-accordion-content-height)" },
-          to: { height: "0" },
+          to:   { height: "0" },
         },
         shimmer: {
-          "0%": { backgroundPosition: "-200% 0" },
-          "100%": { backgroundPosition: "200% 0" },
+          "0%":   { backgroundPosition: "-200% 0" },
+          "100%": { backgroundPosition: "200% 0"  },
         },
-        "pulse-gold": {
-          "0%, 100%": { boxShadow: "0 0 0 0 rgba(201, 162, 39, 0.4)" },
-          "50%": { boxShadow: "0 0 0 6px rgba(201, 162, 39, 0)" },
+        "pulse-nature": {
+          "0%, 100%": { boxShadow: "0 0 0 0 rgba(61, 144, 64, 0.4)" },
+          "50%":      { boxShadow: "0 0 0 6px rgba(61, 144, 64, 0)" },
         },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
-        "accordion-up": "accordion-up 0.2s ease-out",
-        shimmer: "shimmer 2s infinite linear",
-        "pulse-gold": "pulse-gold 2s infinite",
+        "accordion-up":   "accordion-up 0.2s ease-out",
+        shimmer:          "shimmer 2s infinite linear",
+        "pulse-nature":   "pulse-nature 2s infinite",
       },
       backgroundImage: {
         shimmer:
-          "linear-gradient(90deg, transparent 0%, rgba(201,162,39,0.1) 50%, transparent 100%)",
+          "linear-gradient(90deg, transparent 0%, rgba(61,144,64,0.08) 50%, transparent 100%)",
+        "nature-gradient":
+          "linear-gradient(135deg, #72c474 0%, #3d9040 55%, #1e5921 100%)",
       },
     },
   },

@@ -21,7 +21,7 @@ const buttonVariants = cva(
         link:
           "text-primary underline-offset-4 hover:underline",
         gold:
-          "bg-gradient-to-b from-[#e8c547] to-[#c9a227] text-background font-semibold shadow hover:from-[#f0d05a] hover:to-[#d4a83e] active:scale-[0.98]",
+          "bg-gradient-to-b from-[#5cbd5e] to-[#3d9040] text-white font-semibold shadow-md hover:from-[#6dd16e] hover:to-[#4aaa4d] active:scale-[0.98]",
       },
       size: {
         default: "h-9 px-4 py-2",
