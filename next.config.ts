@@ -17,6 +17,13 @@ const nextConfig: NextConfig = {
         hostname: "chisel.weirdgloop.org",
         pathname: "/**",
       },
+      // RuneLite CDN — serves official OSRS item sprites by item ID
+      // e.g. https://static.runelite.net/cache/item/icon/13265.png
+      {
+        protocol: "https",
+        hostname: "static.runelite.net",
+        pathname: "/cache/item/icon/**",
+      },
     ],
   },
 

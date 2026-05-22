@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { AppShell } from "@/components/app-shell";
 import { Breadcrumbs } from "@/components/breadcrumbs";
@@ -25,20 +26,39 @@ const MODE_LABELS: Record<string, string> = {
   seasonal: "Seasonal",
 };
 
-const SKILL_ICONS: Record<string, string> = {
-  Overall: "🏆", Attack: "⚔️", Defence: "🛡️", Strength: "💪",
-  Hitpoints: "❤️", Ranged: "🏹", Prayer: "🙏", Magic: "🔮",
-  Cooking: "🍳", Woodcutting: "🪓", Fletching: "🏹", Fishing: "🎣",
-  Firemaking: "🔥", Crafting: "🧶", Smithing: "⚒️", Mining: "⛏️",
-  Herblore: "🌿", Agility: "🏃", Thieving: "🗝️", Slayer: "💀",
-  Farming: "🌱", Runecraft: "🌀", Hunter: "🪤", Construction: "🏠",
+// OSRS Wiki skill icon URLs — proxy through Next.js image optimization
+const SKILL_ICON: Record<string, string> = {
+  "Overall":      "https://oldschool.runescape.wiki/images/Stats_icon.png",
+  "Attack":       "https://oldschool.runescape.wiki/images/Attack_icon.png",
+  "Defence":      "https://oldschool.runescape.wiki/images/Defence_icon.png",
+  "Strength":     "https://oldschool.runescape.wiki/images/Strength_icon.png",
+  "Hitpoints":    "https://oldschool.runescape.wiki/images/Hitpoints_icon.png",
+  "Ranged":       "https://oldschool.runescape.wiki/images/Ranged_icon.png",
+  "Prayer":       "https://oldschool.runescape.wiki/images/Prayer_icon.png",
+  "Magic":        "https://oldschool.runescape.wiki/images/Magic_icon.png",
+  "Cooking":      "https://oldschool.runescape.wiki/images/Cooking_icon.png",
+  "Woodcutting":  "https://oldschool.runescape.wiki/images/Woodcutting_icon.png",
+  "Fletching":    "https://oldschool.runescape.wiki/images/Fletching_icon.png",
+  "Fishing":      "https://oldschool.runescape.wiki/images/Fishing_icon.png",
+  "Firemaking":   "https://oldschool.runescape.wiki/images/Firemaking_icon.png",
+  "Crafting":     "https://oldschool.runescape.wiki/images/Crafting_icon.png",
+  "Smithing":     "https://oldschool.runescape.wiki/images/Smithing_icon.png",
+  "Mining":       "https://oldschool.runescape.wiki/images/Mining_icon.png",
+  "Herblore":     "https://oldschool.runescape.wiki/images/Herblore_icon.png",
+  "Agility":      "https://oldschool.runescape.wiki/images/Agility_icon.png",
+  "Thieving":     "https://oldschool.runescape.wiki/images/Thieving_icon.png",
+  "Slayer":       "https://oldschool.runescape.wiki/images/Slayer_icon.png",
+  "Farming":      "https://oldschool.runescape.wiki/images/Farming_icon.png",
+  "Runecraft":    "https://oldschool.runescape.wiki/images/Runecraft_icon.png",
+  "Hunter":       "https://oldschool.runescape.wiki/images/Hunter_icon.png",
+  "Construction": "https://oldschool.runescape.wiki/images/Construction_icon.png",
 };
 
 function formatXp(xp: number): string {
   if (xp < 0) return "—";
   if (xp >= 1_000_000) return `${(xp / 1_000_000).toFixed(2)}M`;
-  if (xp >= 1_000) return `${(xp / 1_000).toFixed(1)}k`;
-  return String(xp);
+  if (xp >= 1_000)     return `${(xp / 1_000).toFixed(1)}k`;
+  return xp.toLocaleString();
 }
 
 function formatRank(rank: number): string {
@@ -109,7 +129,7 @@ export default async function HiscoresPage({ searchParams }: Props) {
                   {MODE_LABELS[gameMode] ?? gameMode} hiscores
                 </p>
               </div>
-              <div className="flex gap-4 ml-auto text-center">
+              <div className="flex gap-6 ml-auto text-center">
                 <div>
                   <div className="text-xl font-bold text-primary tabular-nums">
                     {data.skills[0]?.level >= 0 ? data.skills[0].level.toLocaleString() : "—"}
@@ -131,45 +151,84 @@ export default async function HiscoresPage({ searchParams }: Props) {
               </div>
             </div>
 
-            {/* Skills */}
+            {/* ── Skills ──────────────────────────────────────────────── */}
             <div>
               <h2 className="flex items-center gap-2 text-sm font-semibold text-foreground mb-3">
                 <TrendingUp className="h-4 w-4 text-primary" />
                 Skills
               </h2>
               <div className="rounded-lg border border-border bg-card overflow-hidden">
-                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 divide-border/50">
-                  {data.skills.map((skill, i) => (
-                    <div
-                      key={skill.name}
-                      className={`flex items-center gap-3 px-3 py-2.5 border-b border-r border-border/40 ${
-                        i === 0 ? "col-span-2 sm:col-span-3 lg:col-span-4 bg-secondary/30" : ""
-                      }`}
-                    >
-                      <span className="text-base leading-none w-5 text-center flex-shrink-0">
-                        {SKILL_ICONS[skill.name] ?? "📊"}
+                {/* Overall row — full width */}
+                {data.skills[0] && (
+                  <div className="flex items-center gap-3 px-4 py-3 border-b border-border bg-secondary/30">
+                    <div className="w-6 h-6 flex-shrink-0 flex items-center justify-center">
+                      <Image
+                        src={SKILL_ICON["Overall"]}
+                        alt="Overall"
+                        width={18}
+                        height={18}
+                        className="object-contain"
+                      />
+                    </div>
+                    <span className="text-sm font-semibold text-foreground">Overall</span>
+                    <div className="ml-auto flex items-center gap-6 text-sm">
+                      <span className="text-muted-foreground text-xs">{formatRank(data.skills[0].rank)}</span>
+                      <span className="font-bold text-primary tabular-nums text-lg">
+                        {data.skills[0].level >= 0 ? data.skills[0].level.toLocaleString() : "—"}
                       </span>
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center justify-between gap-2">
-                          <span className="text-xs text-muted-foreground">{skill.name}</span>
-                          <span className={`text-sm font-bold tabular-nums ${
-                            skill.level >= 99 ? "text-primary" : "text-foreground"
-                          }`}>
-                            {skill.level >= 0 ? skill.level.toLocaleString() : "—"}
-                          </span>
+                      <span className="text-muted-foreground text-xs tabular-nums w-20 text-right">
+                        {formatXp(data.skills[0].xp)} XP
+                      </span>
+                    </div>
+                  </div>
+                )}
+
+                {/* Remaining skills in a grid */}
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4">
+                  {data.skills.slice(1).map((skill) => {
+                    const iconUrl = SKILL_ICON[skill.name];
+                    return (
+                      <div
+                        key={skill.name}
+                        className="flex items-center gap-2.5 px-3 py-2.5 border-b border-r border-border/40 hover:bg-muted/10 transition-colors"
+                      >
+                        {/* OSRS skill icon */}
+                        <div className="w-[18px] h-[18px] flex-shrink-0 relative">
+                          {iconUrl ? (
+                            <Image
+                              src={iconUrl}
+                              alt={skill.name}
+                              width={18}
+                              height={18}
+                              className="object-contain"
+                            />
+                          ) : (
+                            <div className="w-[18px] h-[18px] bg-muted rounded-sm" />
+                          )}
                         </div>
-                        <div className="flex items-center justify-between text-[10px] text-muted-foreground mt-0.5">
-                          <span>{formatRank(skill.rank)}</span>
-                          <span>{formatXp(skill.xp)}</span>
+
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center justify-between gap-1">
+                            <span className="text-[11px] text-muted-foreground truncate">{skill.name}</span>
+                            <span className={`text-sm font-bold tabular-nums ${
+                              skill.level >= 99 ? "text-primary" : "text-foreground"
+                            }`}>
+                              {skill.level >= 0 ? skill.level : "—"}
+                            </span>
+                          </div>
+                          <div className="flex items-center justify-between text-[10px] text-muted-foreground mt-0.5">
+                            <span>{formatRank(skill.rank)}</span>
+                            <span>{formatXp(skill.xp)}</span>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               </div>
             </div>
 
-            {/* Clue Scrolls */}
+            {/* ── Clue Scrolls ────────────────────────────────────────── */}
             {data.clues.length > 0 && (
               <div>
                 <h2 className="flex items-center gap-2 text-sm font-semibold text-foreground mb-3">
@@ -203,8 +262,8 @@ export default async function HiscoresPage({ searchParams }: Props) {
               </div>
             )}
 
-            {/* Boss Kill Counts */}
-            {data.bosses.length > 0 && (
+            {/* ── Boss Kill Counts ─────────────────────────────────────── */}
+            {data.bosses.length > 0 ? (
               <div>
                 <h2 className="flex items-center gap-2 text-sm font-semibold text-foreground mb-3">
                   <Swords className="h-4 w-4 text-primary" />
@@ -226,7 +285,7 @@ export default async function HiscoresPage({ searchParams }: Props) {
                         .map((boss) => (
                           <tr key={boss.name} className="border-b border-border/40 hover:bg-muted/10">
                             <td className="px-4 py-2.5 text-foreground">{boss.name}</td>
-                            <td className="px-4 py-2.5 text-right font-semibold tabular-nums text-primary">
+                            <td className="px-4 py-2.5 text-right font-bold tabular-nums text-primary">
                               {boss.score.toLocaleString()}
                             </td>
                             <td className="px-4 py-2.5 text-right text-muted-foreground text-xs hidden sm:table-cell">
@@ -238,9 +297,7 @@ export default async function HiscoresPage({ searchParams }: Props) {
                   </table>
                 </div>
               </div>
-            )}
-
-            {data.bosses.length === 0 && (
+            ) : (
               <p className="text-sm text-muted-foreground text-center py-4">
                 No boss kill counts on the hiscores for this player.
               </p>

@@ -27,7 +27,9 @@ export function CollectionItemCard({
   onGoalToggle,
   isGoal = false,
 }: CollectionItemCardProps) {
-  const iconUrl = `https://oldschool.runescape.wiki/images/${encodeURIComponent(item.name.replace(/ /g, "_"))}_detail.png`;
+  // RuneLite CDN serves official OSRS in-game sprites by item ID — far more
+  // reliable than wiki name-based URLs which can 404 or be blocked
+  const iconUrl = `https://static.runelite.net/cache/item/icon/${item.itemId}.png`;
 
   if (compact) {
     return (

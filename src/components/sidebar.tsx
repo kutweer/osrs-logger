@@ -31,6 +31,7 @@ interface NavItem {
 const PUBLIC_NAV: NavItem[] = [
   { href: "/", label: "Home", icon: BookOpen, exact: true },
   { href: "/bosses", label: "Bosses", icon: Sword },
+  { href: "/players/Omhoog/collection-log", label: "Collection Log", icon: BookOpen },
   { href: "/hiscores", label: "Hiscores", icon: BarChart2 },
   { href: "/leaderboards", label: "Leaderboards", icon: Trophy },
   { href: "/items", label: "Item Database", icon: Package },

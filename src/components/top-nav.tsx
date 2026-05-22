@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { Menu, X, Leaf, LogIn, LayoutDashboard, Sword, BarChart2 } from "lucide-react";
+import { Menu, X, Leaf, LogIn, LayoutDashboard, Sword, BarChart2, BookOpen } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { PlayerSearch } from "@/components/player-search";
 import { cn } from "@/lib/utils";
@@ -40,8 +40,9 @@ export function TopNav({ showSearch = true, user }: TopNavProps) {
           {/* Nav links */}
           <nav className="hidden sm:flex items-center gap-0.5">
             {[
-              { href: "/bosses",    label: "Bosses",    icon: Sword     },
-              { href: "/hiscores",  label: "Hiscores",  icon: BarChart2 },
+              { href: "/bosses",                      label: "Bosses",       icon: Sword     },
+              { href: "/players/Omhoog/collection-log", label: "Collection Log", icon: BookOpen  },
+              { href: "/hiscores",                    label: "Hiscores",     icon: BarChart2 },
             ].map(({ href, label, icon: Icon }) => (
               <Button key={href} variant="ghost" size="sm" asChild className="text-muted-foreground hover:text-foreground">
                 <Link href={href} className="gap-1.5">
@@ -52,9 +53,6 @@ export function TopNav({ showSearch = true, user }: TopNavProps) {
             ))}
             <Button variant="ghost" size="sm" asChild className="text-muted-foreground hover:text-foreground">
               <Link href="/leaderboards">Leaderboards</Link>
-            </Button>
-            <Button variant="ghost" size="sm" asChild className="text-muted-foreground hover:text-foreground">
-              <Link href="/items">Items</Link>
             </Button>
 
             <div className="w-px h-5 bg-border mx-1" />
@@ -97,11 +95,12 @@ export function TopNav({ showSearch = true, user }: TopNavProps) {
           )}
           <nav className="flex flex-col gap-0.5">
             {[
-              { href: "/bosses",       label: "Bosses"        },
-              { href: "/hiscores",     label: "Hiscores"      },
-              { href: "/leaderboards", label: "Leaderboards"  },
-              { href: "/items",        label: "Item Database" },
-              { href: "/about",        label: "About"         },
+              { href: "/bosses",                        label: "Bosses"         },
+              { href: "/players/Omhoog/collection-log", label: "Collection Log" },
+              { href: "/hiscores",                      label: "Hiscores"       },
+              { href: "/leaderboards",                  label: "Leaderboards"   },
+              { href: "/items",                         label: "Item Database"  },
+              { href: "/about",                         label: "About"          },
             ].map((link) => (
               <Link
                 key={link.href}
