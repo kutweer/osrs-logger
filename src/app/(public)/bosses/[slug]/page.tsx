@@ -54,7 +54,7 @@ export default async function BossPage({ params }: Props) {
   const fallbackSpriteUrl = boss.iconItemId
     ? `https://static.runelite.net/cache/item/icon/${boss.iconItemId}.png`
     : undefined;
-  const wikiUrl = `https://oldschool.runescape.wiki/w/${boss.wikiImageSlug ?? boss.name.replace(/ /g, "_")}`;
+  const wikiUrl = `https://oldschool.runescape.wiki/w/${boss.name.replace(/ /g, "_")}`;
 
   return (
     <AppShell showSearch>
